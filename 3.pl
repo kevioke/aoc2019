@@ -90,3 +90,27 @@ solution1(ClosestIntersection, Dist) :-
   find_intersections(Vectors1, Vectors2, Intersections),
   closest(Intersections, ClosestIntersection),
   dist(ClosestIntersection, Dist).
+
+% Solution 2
+
+min_trail_steps([H|_], H, 1) :- !.
+
+min_trail_steps([_|T], Goal, MinSteps) :-
+  min_trail_steps(T, Goal, Steps),
+  MinSteps is Steps + 1.
+
+combined_steps(_, _, [], []).
+
+combined_steps(Trail1, Trail2, [Goal|NextGoals], [CombinedSteps|T]) :-
+  min_trail_steps(Trail1, Goal, Steps1),
+  min_trail_steps(Trail2, Goal, Steps2),
+  CombinedSteps is Steps1 + Steps2,
+  combined_steps(Trail1, Trail2, NextGoals, T).
+
+solution2(MinSteps) :-
+  parse_vectors(Vectors1, Vectors2),
+  gen_trail(pos(0,0), Vectors1, Trail1),
+  gen_trail(pos(0,0), Vectors2, Trail2),
+  find_intersections(Vectors1, Vectors2, Intersections),
+  combined_steps(Trail1, Trail2, Intersections, CombinedSteps),
+  min_list(CombinedSteps, MinSteps).
