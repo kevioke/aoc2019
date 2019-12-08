@@ -1,71 +1,89 @@
-directions(Dir1, Dir2) :-
-  Dir1 = [right(997),down(443),left(406),down(393),left(66),down(223),right(135),up(452),left(918),up(354),left(985),down(402),right(257),up(225),right(298),up(369),left(762),down(373),right(781),down(935),right(363),up(952),left(174),down(529),left(127),down(549),right(874),down(993),left(890),up(881),right(549),up(537),left(174),up(766),right(244),up(131),right(861),down(487),right(849),up(304),left(653),down(497),left(711),down(916),right(12),down(753),right(19),down(528),left(944),down(155),left(507),up(552),right(844),down(822),right(341),up(948),left(922),up(866),right(387),up(973),right(534),up(127),right(48),up(744),right(950),up(522),right(930),up(320),right(254),down(577),left(142),down(29),left(24),down(118),left(583),down(683),left(643),up(974),left(683),up(985),right(692),down(271),left(279),up(62),right(157),down(932),left(556),up(574),right(615),down(428),right(296),up(551),left(452),up(533),right(475),down(302),right(39),up(846),right(527),down(433),left(453),down(567),right(614),up(807),right(463),up(712),left(247),down(436),right(141),up(180),right(783),down(65),left(379),down(935),right(989),up(945),left(901),down(160),right(356),down(828),right(45),down(619),right(655),up(104),right(37),up(793),left(360),down(242),left(137),down(45),left(671),down(844),right(112),up(627),right(976),up(10),right(942),up(26),left(470),down(284),right(832),down(59),right(97),down(9),left(320),down(38),right(326),up(317),left(752),up(213),right(840),up(789),left(152),down(64),left(628),up(326),left(640),down(610),left(769),up(183),right(844),up(834),right(342),up(630),left(945),down(807),left(270),down(472),right(369),down(920),right(283),up(440),left(597),up(137),left(133),up(458),right(266),up(91),right(137),up(536),right(861),down(325),right(902),down(971),right(891),up(648),left(573),up(139),right(951),down(671),right(996),up(864),left(749),down(681),right(255),up(306),right(154),up(706),left(817),down(798),right(109),down(594),right(496),down(867),left(217),down(572),left(166),up(723),right(66),down(210),right(732),down(741),left(21),down(574),left(523),down(646),right(313),down(961),left(474),up(990),right(125),up(928),left(58),up(726),right(200),down(364),right(244),up(622),right(823),up(39),right(918),up(549),right(667),up(935),right(372),up(241),left(56),down(713),left(735),up(735),left(812),up(700),left(408),up(980),left(242),down(697),left(580),down(34),left(266),up(190),right(876),up(857),left(967),up(493),right(871),up(563),left(241),down(636),left(467),down(793),right(304),up(103),left(950),down(503),right(487),down(868),left(358),down(747),left(338),down(273),left(485),down(686),left(974),down(724),left(534),up(561),right(729),down(162),right(731),down(17),right(305),up(712),right(472),down(158),right(921),up(827),left(944),down(303),left(526),down(782),right(575),up(948),left(401),down(142),left(48),up(766),right(799),down(242),right(821),up(673),left(120)],
-  Dir2 = [left(991),down(492),left(167),down(678),left(228),up(504),right(972),up(506),right(900),up(349),right(329),down(802),right(616),up(321),right(252),up(615),right(494),up(577),right(322),down(593),right(348),up(140),left(676),up(908),left(528),down(247),left(498),down(79),left(247),down(432),left(569),up(206),left(668),down(269),left(25),up(180),right(181),down(268),right(655),down(346),right(716),up(240),left(227),down(239),left(223),up(760),left(10),down(92),left(633),down(425),right(198),up(222),left(542),down(790),left(596),up(667),left(87),down(324),right(456),up(366),right(888),up(319),right(784),down(948),right(641),down(433),left(519),up(950),left(689),down(601),left(860),up(233),right(21),down(214),left(89),up(756),left(361),up(258),left(950),down(483),right(252),up(206),left(184),up(574),left(540),up(926),right(374),up(315),right(357),up(512),right(503),up(917),right(745),down(809),left(94),down(209),right(616),up(47),right(61),down(993),left(589),down(1),right(387),down(731),right(782),up(771),left(344),up(21),left(88),up(614),right(678),up(259),left(311),down(503),left(477),up(829),right(861),down(46),right(738),down(138),left(564),down(279),left(669),up(328),left(664),up(720),left(746),up(638),right(790),down(242),right(504),down(404),right(409),down(753),left(289),up(128),left(603),down(696),left(201),down(638),left(902),down(279),left(170),down(336),left(311),up(683),left(272),up(396),right(180),down(8),right(816),down(904),left(129),down(809),right(168),down(655),left(459),down(545),left(839),up(910),left(642),up(704),right(301),down(235),right(469),down(556),left(624),down(669),left(174),down(272),right(515),down(60),left(668),up(550),left(903),down(881),left(600),down(734),right(815),up(585),right(39),down(87),right(198),down(418),left(150),down(964),left(818),down(250),left(198),down(127),right(521),up(478),left(489),down(676),left(84),up(973),right(384),down(167),right(372),down(981),left(733),down(682),right(746),down(803),left(834),down(421),right(153),up(752),left(381),down(990),right(216),up(469),left(446),down(763),right(332),down(813),left(701),up(872),left(39),down(524),left(469),up(508),left(700),down(382),left(598),up(563),right(652),down(901),right(638),down(358),left(486),down(735),left(232),up(345),right(746),up(818),left(13),up(618),right(881),down(647),right(191),up(652),right(358),up(423),left(137),down(224),right(415),up(82),right(778),down(403),right(661),down(157),right(393),down(954),left(308),down(986),left(293),up(870),right(13),up(666),left(232),up(144),right(887),up(364),left(507),up(520),right(823),down(11),left(927),down(904),right(618),up(875),right(143),down(457),right(459),down(755),right(677),down(561),left(499),up(267),left(721),up(274),left(700),down(870),left(612),down(673),left(811),down(695),right(929),down(84),left(578),up(201),left(745),up(963),left(185),down(687),left(662),up(313),left(853),up(314),right(336)].
+take_step(up, X, Y, NextX, NextY) :-
+  NextX = X,
+  NextY is Y + 1.
+take_step(down, X, Y, NextX, NextY) :-
+  NextX = X,
+  NextY is Y - 1.
+take_step(left, X, Y, NextX, NextY) :-
+  NextX is X - 1,
+  NextY = Y. 
+take_step(right, X, Y, NextX, NextY) :-
+  NextX is X + 1,
+  NextY = Y. 
 
-append( [], X, X).
-append( [X | Y], Z, [X | W]) :- append( Y, Z, W).
+gen(pos(_, _), vector(_, 0), []).
+gen(pos(X, Y), vector(Dir, Magnitude), [pos(NextX, NextY)|Rest]) :-
+  take_step(Dir, X, Y, NextX, NextY),
+  NextMagnitude is Magnitude - 1,
+  gen(pos(NextX, NextY), vector(Dir, NextMagnitude), Rest).
 
-set_intersection([], _, []).
+gen_trail(CurrentPos, [Vector], Trail) :-
+  gen(CurrentPos, Vector, Trail).
 
-set_intersection([H1|T1], L2, [H1|Res]) :-
-    member(H1, L2),
-    set_intersection(T1, L2, Res).
-
-set_intersection([_|T1], L2, Res) :-
-  set_intersection(T1, L2, Res).
-
-last_pos([X], X).
-last_pos([_|T], Val) :- last_pos(T, Val).
-
-gen(pos(_, _), up(0), []).
-gen(pos(X, Y), up(V), [pos(NewX, NewY)|Rest]) :-
-  NewX is X,
-  NewY is Y + 1,
-  NextV is V - 1,
-  gen(pos(X, NewY), up(NextV), Rest).
-
-gen(pos(_, _), down(0), []).
-gen(pos(X, Y), down(V), [pos(NewX, NewY)|Rest]) :-
-  NewX is X,
-  NewY is Y - 1,
-  NextV is V - 1,
-  gen(pos(X, NewY), down(NextV), Rest).
-
-gen(pos(_, _), left(0), []).
-gen(pos(X, Y), left(V), [pos(NewX, NewY)|Rest]) :-
-  NewX is X - 1,
-  NewY is Y,
-  NextV is V - 1,
-  gen(pos(NewX, Y), left(NextV), Rest).
-
-gen(pos(_, _), right(0), []).
-gen(pos(X, Y), right(V), [pos(NewX, NewY)|Rest]) :-
-  NewX is X + 1,
-  NewY is Y,
-  NextV is V - 1,
-  gen(pos(NewX, Y), right(NextV), Rest).
-
-gen_trail(CurrentPos, [Direction], Trail) :-
-  gen(CurrentPos, Direction, Trail).
-
-gen_trail(CurrentPos, [Direction|RemainingDirections], FullTrail) :-
-  gen(CurrentPos, Direction, CurrentTrail),
-  last_pos(CurrentTrail, NextPos),
-  gen_trail(NextPos, RemainingDirections, RemainingTrail),
+gen_trail(CurrentPos, [Vector|RemainingVectors], FullTrail) :-
+  gen(CurrentPos, Vector, CurrentTrail),
+  last(CurrentTrail, NextPos),
+  gen_trail(NextPos, RemainingVectors, RemainingTrail),
   append(CurrentTrail, RemainingTrail, FullTrail).
 
-debug_gen1(Len1, Len2) :-
-  directions(Dir1, Dir2),
-  gen_trail(pos(0,0), Dir1, Trail1),
-  gen_trail(pos(0,0), Dir2, Trail2),
-  length(Trail1, Len1),
-  length(Trail2, Len2).
+find_intersections(Vectors1, Vectors2, Intersection) :-
+  gen_trail(pos(0,0), Vectors1, Trail1),
+  gen_trail(pos(0,0), Vectors2, Trail2),
+  setof(pos(X, Y), member(pos(X, Y), Trail1), Set1),
+  setof(pos(X, Y), member(pos(X, Y), Trail2), Set2),
+  ord_intersection(Set1, Set2, Intersection).
 
-find_intersection(Directions1, Directions2, SetIntersection) :-
-  gen_trail(pos(0,0), Directions1, Trail1),
-  gen_trail(pos(0,0), Directions2, Trail2),
-  set_intersection(Trail1, Trail2, SetIntersection).
+digit(0) --> ['0'].
+digit(1) --> ['1'].
+digit(2) --> ['2'].
+digit(3) --> ['3'].
+digit(4) --> ['4'].
+digit(5) --> ['5'].
+digit(6) --> ['6'].
+digit(7) --> ['7'].
+digit(8) --> ['8'].
+digit(9) --> ['9'].
 
-solution1(Intersection) :-
-  directions(Dir1, Dir2),
-  find_intersection(Dir1, Dir2, Intersection).
+nat(N)   --> digit(D), nat(D,N).
+nat(N,N) --> [].
+nat(A,N) --> digit(D), { A1 is A*10 + D }, nat(A1,N).
+
+vectors([Vector]) --> vector(Vector).
+vectors([Vector|RemainingVectors]) --> vector(Vector), [','], vectors(RemainingVectors).
+
+vector(vector(D, Magnitude)) --> direction(D), nat(Magnitude).
+direction(up) --> ['U'].
+direction(down) --> ['D'].
+direction(left) --> ['L'].
+direction(right) --> ['R'].
+
+parse_vectors(Vectors1, Vectors2) :-
+  Input1 = "R997,D443,L406,D393,L66,D223,R135,U452,L918,U354,L985,D402,R257,U225,R298,U369,L762,D373,R781,D935,R363,U952,L174,D529,L127,D549,R874,D993,L890,U881,R549,U537,L174,U766,R244,U131,R861,D487,R849,U304,L653,D497,L711,D916,R12,D753,R19,D528,L944,D155,L507,U552,R844,D822,R341,U948,L922,U866,R387,U973,R534,U127,R48,U744,R950,U522,R930,U320,R254,D577,L142,D29,L24,D118,L583,D683,L643,U974,L683,U985,R692,D271,L279,U62,R157,D932,L556,U574,R615,D428,R296,U551,L452,U533,R475,D302,R39,U846,R527,D433,L453,D567,R614,U807,R463,U712,L247,D436,R141,U180,R783,D65,L379,D935,R989,U945,L901,D160,R356,D828,R45,D619,R655,U104,R37,U793,L360,D242,L137,D45,L671,D844,R112,U627,R976,U10,R942,U26,L470,D284,R832,D59,R97,D9,L320,D38,R326,U317,L752,U213,R840,U789,L152,D64,L628,U326,L640,D610,L769,U183,R844,U834,R342,U630,L945,D807,L270,D472,R369,D920,R283,U440,L597,U137,L133,U458,R266,U91,R137,U536,R861,D325,R902,D971,R891,U648,L573,U139,R951,D671,R996,U864,L749,D681,R255,U306,R154,U706,L817,D798,R109,D594,R496,D867,L217,D572,L166,U723,R66,D210,R732,D741,L21,D574,L523,D646,R313,D961,L474,U990,R125,U928,L58,U726,R200,D364,R244,U622,R823,U39,R918,U549,R667,U935,R372,U241,L56,D713,L735,U735,L812,U700,L408,U980,L242,D697,L580,D34,L266,U190,R876,U857,L967,U493,R871,U563,L241,D636,L467,D793,R304,U103,L950,D503,R487,D868,L358,D747,L338,D273,L485,D686,L974,D724,L534,U561,R729,D162,R731,D17,R305,U712,R472,D158,R921,U827,L944,D303,L526,D782,R575,U948,L401,D142,L48,U766,R799,D242,R821,U673,L120",
+  Input2 = "L991,D492,L167,D678,L228,U504,R972,U506,R900,U349,R329,D802,R616,U321,R252,U615,R494,U577,R322,D593,R348,U140,L676,U908,L528,D247,L498,D79,L247,D432,L569,U206,L668,D269,L25,U180,R181,D268,R655,D346,R716,U240,L227,D239,L223,U760,L10,D92,L633,D425,R198,U222,L542,D790,L596,U667,L87,D324,R456,U366,R888,U319,R784,D948,R641,D433,L519,U950,L689,D601,L860,U233,R21,D214,L89,U756,L361,U258,L950,D483,R252,U206,L184,U574,L540,U926,R374,U315,R357,U512,R503,U917,R745,D809,L94,D209,R616,U47,R61,D993,L589,D1,R387,D731,R782,U771,L344,U21,L88,U614,R678,U259,L311,D503,L477,U829,R861,D46,R738,D138,L564,D279,L669,U328,L664,U720,L746,U638,R790,D242,R504,D404,R409,D753,L289,U128,L603,D696,L201,D638,L902,D279,L170,D336,L311,U683,L272,U396,R180,D8,R816,D904,L129,D809,R168,D655,L459,D545,L839,U910,L642,U704,R301,D235,R469,D556,L624,D669,L174,D272,R515,D60,L668,U550,L903,D881,L600,D734,R815,U585,R39,D87,R198,D418,L150,D964,L818,D250,L198,D127,R521,U478,L489,D676,L84,U973,R384,D167,R372,D981,L733,D682,R746,D803,L834,D421,R153,U752,L381,D990,R216,U469,L446,D763,R332,D813,L701,U872,L39,D524,L469,U508,L700,D382,L598,U563,R652,D901,R638,D358,L486,D735,L232,U345,R746,U818,L13,U618,R881,D647,R191,U652,R358,U423,L137,D224,R415,U82,R778,D403,R661,D157,R393,D954,L308,D986,L293,U870,R13,U666,L232,U144,R887,U364,L507,U520,R823,D11,L927,D904,R618,U875,R143,D457,R459,D755,R677,D561,L499,U267,L721,U274,L700,D870,L612,D673,L811,D695,R929,D84,L578,U201,L745,U963,L185,D687,L662,U313,L853,U314,R336",
+  string_chars(Input1, SplitInput1),
+  string_chars(Input2, SplitInput2),
+  vectors(Vectors1, SplitInput1, []),
+  vectors(Vectors2, SplitInput2, []).
+
+dist(pos(X, Y), Dist) :-
+  Dist is abs(X) + abs(Y).
+
+closest([Pos], Pos).
+
+closest([FirstPos,SecondPos|RemainingPos], ClosestPos) :-
+  dist(FirstPos, Dist1),
+  dist(SecondPos, Dist2), 
+  Dist1 =< Dist2,
+  closest([FirstPos|RemainingPos], ClosestPos).
+
+closest([FirstPos,SecondPos|RemainingPos], ClosestPos) :-
+  dist(FirstPos, Dist1),
+  dist(SecondPos, Dist2), 
+  Dist1 > Dist2,
+  closest([SecondPos|RemainingPos], ClosestPos).
+
+solution1(ClosestIntersection, Dist) :-
+  parse_vectors(Vectors1, Vectors2),
+  find_intersections(Vectors1, Vectors2, Intersections),
+  closest(Intersections, ClosestIntersection),
+  dist(ClosestIntersection, Dist).
