@@ -50,6 +50,7 @@ run_computer(State, InstPtr, FinalState, [State|NextStates]) :-
   NextInstPtr is InstPtr + 4,
   run_computer(NextState, NextInstPtr, FinalState, NextStates).
 
+%print instruction
 run_computer(State, InstPtr, FinalState, [printed(State, InstPtr)|NextStates]) :-
   nth0(InstPtr, State, CurrentInt),
   OpInt is mod(CurrentInt, 100),
@@ -64,6 +65,7 @@ run_computer(State, InstPtr, FinalState, [printed(State, InstPtr)|NextStates]) :
   NextInstPtr is InstPtr + 2,
   run_computer(State, NextInstPtr, FinalState, NextStates).
 
+%read instruction
 run_computer(State, InstPtr, FinalState, [State|NextStates]) :-
   nth0(InstPtr, State, CurrentInt),
   OpInt is mod(CurrentInt, 100),
@@ -71,7 +73,85 @@ run_computer(State, InstPtr, FinalState, [State|NextStates]) :-
 
   DestPtr is InstPtr + 1,
   resolve_val(State, immediate_mode, DestPtr, Dest),
-  replace(State, Dest, 1, NextState),
+  replace(State, Dest, 5, NextState), %Hard coded input!!!
 
   NextInstPtr is InstPtr + 2,
   run_computer(NextState, NextInstPtr, FinalState, NextStates).
+
+run_computer(State, InstPtr, FinalState, [State|NextStates]) :-
+  nth0(InstPtr, State, CurrentInt),
+  OpInt is mod(CurrentInt, 100),
+  OpInt = 5,
+
+  mode(CurrentInt, Mode1, Mode2, _),
+  ParamPtr1 is InstPtr + 1,
+  ParamPtr2 is InstPtr + 2,
+  resolve_val(State, Mode1, ParamPtr1, Val1),
+  resolve_val(State, Mode2, ParamPtr2, Val2),
+
+  jump_if_true(Val1, Val2, InstPtr, NextInstPtr),
+  run_computer(State, NextInstPtr, FinalState, NextStates).
+
+run_computer(State, InstPtr, FinalState, [State|NextStates]) :-
+  nth0(InstPtr, State, CurrentInt),
+  OpInt is mod(CurrentInt, 100),
+  OpInt = 6,
+
+  mode(CurrentInt, Mode1, Mode2, _),
+  ParamPtr1 is InstPtr + 1,
+  ParamPtr2 is InstPtr + 2,
+  resolve_val(State, Mode1, ParamPtr1, Val1),
+  resolve_val(State, Mode2, ParamPtr2, Val2),
+
+  jump_if_false(Val1, Val2, InstPtr, NextInstPtr),
+  run_computer(State, NextInstPtr, FinalState, NextStates).
+
+run_computer(State, InstPtr, FinalState, [State|NextStates]) :-
+  nth0(InstPtr, State, CurrentInt),
+  OpInt is mod(CurrentInt, 100),
+  OpInt = 7,
+
+  mode(CurrentInt, Mode1, Mode2, _),
+  ParamPtr1 is InstPtr + 1,
+  ParamPtr2 is InstPtr + 2,
+  resolve_val(State, Mode1, ParamPtr1, Val1),
+  resolve_val(State, Mode2, ParamPtr2, Val2),
+
+  less_than(Val1, Val2, Result),
+  DestPtr is InstPtr + 3,
+  resolve_val(State, immediate_mode, DestPtr, Dest),
+  replace(State, Dest, Result, NextState),
+
+  NextInstPtr is InstPtr + 4,
+  run_computer(NextState, NextInstPtr, FinalState, NextStates).
+
+
+run_computer(State, InstPtr, FinalState, [State|NextStates]) :-
+  nth0(InstPtr, State, CurrentInt),
+  OpInt is mod(CurrentInt, 100),
+  OpInt = 8,
+
+  mode(CurrentInt, Mode1, Mode2, _),
+  ParamPtr1 is InstPtr + 1,
+  ParamPtr2 is InstPtr + 2,
+  resolve_val(State, Mode1, ParamPtr1, Val1),
+  resolve_val(State, Mode2, ParamPtr2, Val2),
+
+  equals(Val1, Val2, Result),
+  DestPtr is InstPtr + 3,
+  resolve_val(State, immediate_mode, DestPtr, Dest),
+  replace(State, Dest, Result, NextState),
+
+  NextInstPtr is InstPtr + 4,
+  run_computer(NextState, NextInstPtr, FinalState, NextStates).
+
+jump_if_true(Val1, Val2, _, Val2) :- Val1 \= 0.
+jump_if_true(Val1, _, InstPtr, NextInstPtr) :- Val1 = 0, NextInstPtr is InstPtr + 3.
+jump_if_false(Val1, Val2, _, Val2) :- Val1 = 0.
+jump_if_false(Val1, _, InstPtr, NextInstPtr) :- Val1 \= 0, NextInstPtr is InstPtr + 3.
+
+less_than(Val1, Val2, 1) :- Val1 < Val2.
+less_than(Val1, Val2, 0) :- Val1 >= Val2.
+
+equals(Val, Val, 1).
+equals(Val1, Val2, 0) :- Val1 \= Val2.
