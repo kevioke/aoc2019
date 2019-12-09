@@ -54,9 +54,10 @@ run_computer(State, InstPtr, FinalState, [printed(State, InstPtr)|NextStates]) :
   nth0(InstPtr, State, CurrentInt),
   OpInt is mod(CurrentInt, 100),
   OpInt = 4,
+  mode(CurrentInt, Mode, _, _),
 
   ValPtr is InstPtr + 1,
-  resolve_val(State, immediate_mode, ValPtr, Val),
+  resolve_val(State, Mode, ValPtr, Val),
   print(Val),
   nl,
 
