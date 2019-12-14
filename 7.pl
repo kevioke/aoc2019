@@ -97,14 +97,16 @@ current_operation(Comp, input_op(Dest)) :-
   resolve_val(Memory, immediate_mode, Param1, Dest).
 
 %Output operation
-current_operation(Comp, output_op(Address)) :-
+current_operation(Comp, output_op(Value)) :-
   inst_ptr(Comp, InstPtr),
   memory_val(Comp, InstPtr, MemVal),
   4 is mod(MemVal, 100),
 
+  mode(MemVal // 100, 0, Mode),
+
   memory(Comp, Memory),
   Param1 is InstPtr + 1,
-  resolve_val(Memory, immediate_mode, Param1, Address).
+  resolve_val(Memory, Mode, Param1, Value).
 
 %Jump operation
 current_operation(Comp, jump_op(NewInstPtr)) :-
@@ -182,15 +184,14 @@ single_step(Comp, NewComp) :-
 
 %output
 single_step(Comp, NewComp) :- 
-  current_operation(Comp, output_op(Address)),
+  current_operation(Comp, output_op(Value)),
   memory(Comp, Memory),
   memory(NewComp, Memory),
   inputs(Comp, Inputs),
   inputs(NewComp, Inputs),
 
   outputs(Comp, CurrentOutputs),
-  memory_val(Comp, Address, Val),
-  outputs(NewComp, [Val|CurrentOutputs]),
+  outputs(NewComp, [Value|CurrentOutputs]),
 
   inst_ptr(Comp, InstPtr),
   NewInstPtr is InstPtr + 2,
@@ -231,17 +232,124 @@ run_until_halt(Comp, FinalComp) :-
   single_step(Comp, NextComp),
   run_until_halt(NextComp, FinalComp).
 
-%run_amps(State, [Phase], Input, Output) :-
-%  single_step(State, 0, _, _, [Phase|Input], Output).
-%
-%run_amps(State, [Phase|Phases], Input, Output) :-
-%  single_step(State, 0, _, _, [Phase|Input], IntermediateOutput),
-%  run_amps(State, Phases, IntermediateOutput, Output). 
-%
-%outputs(State, Output) :-
-%  permutation([0, 1, 2, 3, 4], Phase),
-%  run_amps(State, Phase, [0], Output).
-%
-%solution1(State, MaxOutput) :-
-%  setof(Output, outputs(State, Output), OutputSet),
-%  max_list(OutputSet, MaxOutput).
+run_until_output(Comp, Comp) :- current_operation(Comp, halt).
+run_until_output(Comp, Comp) :- outputs(Comp, [X]), number(X).
+run_until_output(Comp, FinalComp) :-
+  current_operation(Comp, Op),
+  Op \= halt,
+  outputs(Comp, []),
+  single_step(Comp, NextComp),
+  run_until_output(NextComp, FinalComp).
+
+run_amps(Memory, [Phase1, Phase2, Phase3, Phase4, Phase5], Output5) :-
+  run_until_halt([0, Memory, [Phase1, 0], []], Comp1),
+  outputs(Comp1, [Output1]),
+  run_until_halt([0, Memory, [Phase2, Output1], []], Comp2),
+  outputs(Comp2, [Output2]),
+  run_until_halt([0, Memory, [Phase3, Output2], []], Comp3),
+  outputs(Comp3, [Output3]),
+  run_until_halt([0, Memory, [Phase4, Output3], []], Comp4),
+  outputs(Comp4, [Output4]),
+  run_until_halt([0, Memory, [Phase5, Output4], []], Comp5),
+  outputs(Comp5, [Output5]).
+
+amp_output(Memory, Output) :-
+  permutation([0, 1, 2, 3, 4], Phases),
+  run_amps(Memory, Phases, Output).
+
+solution1(Memory, MaxOutput, OutputSet) :-
+  setof(Output, amp_output(Memory, Output), OutputSet),
+  max_list(OutputSet, MaxOutput).
+
+run_amps2(_, [Comp1, Comp2, Comp3, Comp4, Comp5], _, Outputs, FinalOutput) :-
+  (current_operation(Comp1, halt);
+   current_operation(Comp2, halt);
+   current_operation(Comp3, halt);
+   current_operation(Comp4, halt);
+   current_operation(Comp5, halt)),
+  last(Outputs, FinalOutput), !.
+run_amps2(InitialInput, [Comp1, Comp2, Comp3, Comp4, Comp5], [Phase1, Phase2, Phase3, Phase4, Phase5], Outputs, FinalOutput) :-
+  append(Phase1, InitialInput, Comp1Input),
+  append_inputs(Comp1, Comp1Input, Comp1WithInputs),
+  run_until_output(Comp1WithInputs, NewComp1),
+  outputs(NewComp1, Outputs1),
+
+  append(Phase2, Outputs1, Comp2Input),
+  append_inputs(Comp2, Comp2Input, Comp2WithInputs),
+  run_until_output(Comp2WithInputs, NewComp2),
+  outputs(NewComp2, Outputs2),
+
+  append(Phase3, Outputs2, Comp3Input),
+  append_inputs(Comp3, Comp3Input, Comp3WithInputs),
+  run_until_output(Comp3WithInputs, NewComp3),
+  outputs(NewComp3, Outputs3),
+
+  append(Phase4, Outputs3, Comp4Input),
+  append_inputs(Comp4, Comp4Input, Comp4WithInputs),
+  run_until_output(Comp4WithInputs, NewComp4),
+  outputs(NewComp4, Outputs4),
+
+  append(Phase5, Outputs4, Comp5Input),
+  append_inputs(Comp5, Comp5Input, Comp5WithInputs),
+  run_until_output(Comp5WithInputs, NewComp5),
+  outputs(NewComp5, Outputs5),
+  append(Outputs, Outputs5, NewOutputs),
+
+  run_amps2(Outputs5, [NewComp1, NewComp2, NewComp3, NewComp4, NewComp5], [[], [], [], [], []], NewOutputs, FinalOutput).
+
+append_inputs(Comp, Inputs, NewComp) :-
+  memory(Comp, Mem),
+  memory(NewComp, Mem),
+  inst_ptr(Comp, Ptr),
+  inst_ptr(NewComp, Ptr),
+  inputs(NewComp, Inputs).
+
+test_basic :-
+  %output 1 if input equal to 8 otherwise 0
+  run_until_output([0, [3,9,8,9,10,9,4,9,99,-1,8], [8], []], [_, _, _, [1]]),
+  run_until_output([0, [3,9,8,9,10,9,4,9,99,-1,8], [2], []], [_, _, _, [0]]),
+  run_until_output([0, [3,9,8,9,10,9,4,9,99,-1,8], [10], []], [_, _, _, [0]]),
+
+  %output 1 if input less than 8 otherwise 0
+  run_until_output([0, [3,9,7,9,10,9,4,9,99,-1,8], [8], []], [_, _, _, [0]]),
+  run_until_output([0, [3,9,7,9,10,9,4,9,99,-1,8], [9], []], [_, _, _, [0]]),
+  run_until_output([0, [3,9,7,9,10,9,4,9,99,-1,8], [7], []], [_, _, _, [1]]),
+
+  %output 1 if equal to 8 otherwise 0
+  run_until_output([0, [3,3,1108,-1,8,3,4,3,99], [8], []], [_, _, _, [1]]),
+  run_until_output([0, [3,3,1108,-1,8,3,4,3,99], [10], []], [_, _, _, [0]]),
+  run_until_output([0, [3,3,1108,-1,8,3,4,3,99], [7], []], [_, _, _, [0]]),
+
+  %output 1 if less than 8 otherwise 0
+  run_until_output([0, [3,3,1107,-1,8,3,4,3,99], [10], []], [_, _, _, [0]]),
+  run_until_output([0, [3,3,1107,-1,8,3,4,3,99], [8], []], [_, _, _, [0]]),
+  run_until_output([0, [3,3,1107,-1,8,3,4,3,99], [7], []], [_, _, _, [1]]),
+
+  %output 0 if input 0, otherwise 1 
+  run_until_output([0, [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9], [0], []], [_, _, _, [0]]),
+  run_until_output([0, [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9], [1], []], [_, _, _, [1]]),
+  run_until_output([0, [3,3,1105,-1,9,1101,0,0,12,4,12,99,1], [0], []], [_, _, _, [0]]),
+  run_until_output([0, [3,3,1105,-1,9,1101,0,0,12,4,12,99,1], [1], []], [_, _, _, [1]]),
+
+  %The program will then output 999 if the input value is below 8, output 1000 if the input value is equal to 8, or output 1001 if the input value is greater than 8.
+  run_until_output([0, [3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31, 1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104, 999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99], [7], []], [_, _, _, [999]]),
+  run_until_output([0, [3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31, 1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104, 999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99], [8], []], [_, _, _, [1000]]),
+  run_until_output([0, [3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31, 1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104, 999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99], [9], []], [_, _, _, [1001]]).
+
+
+test1(Output) :-
+  Comp = [0, [3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5], [], []],
+  run_amps2([0], [Comp, Comp, Comp, Comp, Comp], [[9],[8],[7],[6],[5]],[], Output).
+
+test2(Output) :-
+  Comp = [0, [3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54, -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4, 53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10], [], []],
+  run_amps2([0], [Comp, Comp, Comp, Comp, Comp], [[9],[7],[8],[5],[6]],[], Output).
+
+amp_output2(Memory, Output) :-
+  permutation([[9],[8],[7],[6],[5]], Phases),
+  Comp = [0, Memory, [], []],
+  run_amps2([0], [Comp, Comp, Comp, Comp, Comp], Phases,[], Output).
+
+solution2(Memory, MaxOutput, OutputSet) :-
+  setof(Output, amp_output2(Memory, Output), OutputSet),
+  max_list(OutputSet, MaxOutput).
